@@ -1,12 +1,42 @@
 package handlers
 
 import (
+	"context"
 	"marketplace/internal/database"
 	"marketplace/internal/models"
 	"time"
 
 	"github.com/gofiber/fiber/v2"
+	"go.mongodb.org/mongo-driver/v2/bson"
 )
+
+func GetUser() fiber.Handler {
+	return func(c *fiber.Ctx) error {
+		email := c.Query("email")
+
+		if email == "" {
+			return c.Status(400).JSON(fiber.Map{})
+		}
+
+		collection := database.GetCollection("users")
+
+		ctx := context.Background()
+
+		var user models.User
+
+		err := collection.FindOne(ctx, bson.M{
+			"email": email,
+		}).Decode(&user)
+
+		if err != nil {
+			return c.Status(404).JSON(fiber.Map{
+				"error": "usuário não encontrado",
+			})
+		}
+
+		return c.JSON(user)
+	}
+}
 
 func CreateUser() fiber.Handler {
 	return func(c *fiber.Ctx) error {
