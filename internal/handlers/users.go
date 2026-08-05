@@ -13,7 +13,6 @@ func CreateUser() fiber.Handler {
 
 		var user models.User
 
-		// return c.Send(c.Body())
 		// Faz o "bind" do JSON que vem do Vue.js para a struct
 		if err := c.BodyParser(&user); err != nil {
 			return c.Status(400).JSON(fiber.Map{"error": "Dados inválidos"})
@@ -24,9 +23,7 @@ func CreateUser() fiber.Handler {
 		user.Created_at = now
 		user.Updated_at = now
 
-		// return c.JSON(user)
-
-		collection := database.Collection("users")
+		collection := database.GetCollection("users")
 
 		_, err := collection.InsertOne(c.Context(), user)
 
