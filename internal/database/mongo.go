@@ -31,6 +31,6 @@ func ConnectDB() {
 	DB = client.Database(config.GetDatabase())
 }
 
-func Collection(name string) *mongo.Collection {
+func GetCollection(name string) *mongo.Collection {
 	return DB.Collection(name)
 }
