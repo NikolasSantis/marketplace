@@ -7,4 +7,5 @@ import (
 func RegisterRoutes(app *fiber.App) {
 	RegisterUserRoutes(app)
 	RegisterProductRoutes(app)
+	RegisterOrderRoutes(app)
 }
